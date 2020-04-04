@@ -11,120 +11,152 @@ import com.gowell.mes.mtr.utils.JsonUtils;
  * @author Billy
  */
 public class Result implements Serializable {
-	/**
-	 * serialVersionUID
-	 */
-	private static final long serialVersionUID = 4260588859031088937L;
+    /**
+     * serialVersionUID
+     */
+    private static final long serialVersionUID = 4260588859031088937L;
 
-	@Override
-	public String toString() {
-		return JsonUtils.serializeWithoutException(this);
-	}
+    @Override
+    public String toString() {
+        return JsonUtils.serializeWithoutException(this);
+    }
 
-	private boolean success;
-	private int errCode;
-	private String errMsg;
-	private Object data;
+    private boolean success;
+    private int errCode;
+    private String errMsg;
+    private Object data;
 
-	/**
-	 * @return the success
-	 */
-	public boolean isSuccess() {
-		return success;
-	}
+    /**
+     * @return the success
+     */
+    public boolean isSuccess() {
+        return success;
+    }
 
-	/**
-	 * @param success the success to set
-	 */
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
+    /**
+     * @param success the success to set
+     */
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 
-	/**
-	 * @return the errCode
-	 */
-	public int getErrCode() {
-		return errCode;
-	}
+    /**
+     * @return the errCode
+     */
+    public int getErrCode() {
+        return errCode;
+    }
 
-	/**
-	 * @param errCode the errCode to set
-	 */
-	public void setErrCode(int errCode) {
-		this.errCode = errCode;
-	}
+    /**
+     * @param errCode the errCode to set
+     */
+    public void setErrCode(int errCode) {
+        this.errCode = errCode;
+    }
 
-	/**
-	 * @return the errMsg
-	 */
-	public String getErrMsg() {
-		return errMsg;
-	}
+    /**
+     * @return the errMsg
+     */
+    public String getErrMsg() {
+        return errMsg;
+    }
 
-	/**
-	 * @param errMsg the errMsg to set
-	 */
-	public void setErrMsg(String errMsg) {
-		this.errMsg = errMsg;
-	}
+    /**
+     * @param errMsg the errMsg to set
+     */
+    public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
+    }
 
-	/**
-	 * @return the data
-	 */
-	public Object getData() {
-		return data;
-	}
+    /**
+     * @return the data
+     */
+    public Object getData() {
+        return data;
+    }
 
-	/**
-	 * @param data the data to set
-	 */
-	public void setData(Object data) {
-		this.data = data;
-	}
+    /**
+     * @param data the data to set
+     */
+    public void setData(Object data) {
+        this.data = data;
+    }
 
-	public Result() {
-		success = true;
-		errCode = 0;
-		errMsg = null;
-		data = null;
-	}
+    public Result() {
+        success = true;
+        errCode = 0;
+        errMsg = null;
+        data = null;
+    }
 
-	public Result(int errCode) {
-		success = (errCode == 0);
-		this.errCode = errCode;
-		errMsg = null;
-		data = null;
-	}
+    public Result(int errCode) {
+        success = (errCode == 0);
+        this.errCode = errCode;
+        errMsg = null;
+        data = null;
+    }
 
-	public Result(String errMsg) {
-		this.errMsg = errMsg;
-		data = null;
 
-		if (errMsg != null && !errMsg.isEmpty())
-			success = false;
-		else
-			success = true;
-		errCode = (success ? 0 : -1);
-	}
+    public Result(String errMsg) {
+        this.errMsg = errMsg;
+        data = null;
 
-	public Result(int errCode, String errMsg) {
-		success = (errCode == 0);
-		this.errCode = errCode;
-		this.errMsg = errMsg;
-		data = null;
-	}
+        if (errMsg != null && !errMsg.isEmpty())
+            success = false;
+        else
+            success = true;
+        errCode = (success ? 0 : -1);
+    }
 
-	public Result(boolean success, int errCode, String errMsg, Object data) {
-		this.success = success;
-		this.errCode = errCode;
-		this.errMsg = errMsg;
-		this.data = data;
-	}
+    public Result(int errCode, String errMsg) {
+        success = (errCode == 0);
+        this.errCode = errCode;
+        this.errMsg = errMsg;
+        data = null;
+    }
 
-	public Result(Object data) {
-		success = true;
-		errCode = 0;
-		errMsg = null;
-		this.data = data;
-	}
+    public Result(boolean success, int errCode, String errMsg, Object data) {
+        this.success = success;
+        this.errCode = errCode;
+        this.errMsg = errMsg;
+        this.data = data;
+    }
+
+    public Result(Object data) {
+        success = true;
+        errCode = 0;
+        errMsg = null;
+        this.data = data;
+    }
+
+    public void codeMatch(Integer code) {
+        this.errCode = code;
+        switch (code) {
+            case -1:
+                this.errMsg = "设备未找到";
+                break;
+            case -2:
+                this.errMsg = "设备正在运作";
+                break;
+            case -3:
+                this.errMsg = "设备已为该状态";
+                break;
+            case -4:
+                this.errMsg = "设备令异常-NULL";
+                break;
+            case -5:
+                this.errMsg = "执行命令失败";
+                break;
+            case -6:
+                this.errMsg = "设备运行冲突";
+                break;
+            case -7:
+                this.errMsg = "电源异常（未开启）";
+                break;
+            default:
+                this.errMsg = "操作成功";
+                break;
+        }
+    }
+
 }
