@@ -1,0 +1,61 @@
+server:
+  port: 9601
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gowell_mtr
+    username: gowell_mtr
+    password: gwktest
+    driver-class-name: org.postgresql.Driver
+
+projector:
+  port: COM6
+  baudrate: 38400
+  databits: 8
+  stopbits: 1
+  parity: 0
+  poweroff: "020100000003"
+  poweron: "020000000002"
+  origin: "http://192.168.1.31"
+  status: "http://192.168.1.31/status.htm"
+  control: "http://192.168.1.31/tgi/status.tgi"
+  
+ezviz:
+  Host: "open.ys7.com"
+  Content-Type: "application/x-www-form-urlencoded"
+  liveon: "https://open.ys7.com/api/lapp/live/video/open"
+  liveoff: "https://open.ys7.com/api/lapp/live/video/close"
+  liveaddress: "https://open.ys7.com/api/lapp/live/address/get"
+  livetoken: "https://open.ys7.com/api/lapp/token/get"
+  source: "C07739493:1"
+  appKey: "12f8586bf54f4772979bf6cd6ab9b324"
+  appSecret: "c6eecd421cf9b29cd24407c077951ea9"
+
+weather:
+  cityid: "101020100"
+  url: "http://www.weather.com.cn/data/cityinfo/101020100.html"
+  packageo: "011255F00000"
+  package: "55AA001AFE00010000000100020100020100FF7457"
+
+plc:
+  host: 192.168.1.30
+  port: 201
+  timeout: 200
+  tries: 3
+  interval: 100
+
+mqtt:
+  url: "tcp://39.98.190.0:1883"
+  clientId: "GowellServer"
+  receiveTopic: "plccontrol"
+  sendTopic: "plcstatus"
+
+http:
+  maxTotal: 100
+  defaultMaxPerRoute: 20
+  connectTimeout: 10000
+  connectionRequestTimeout: 5000
+  socketTimeout: 10000
+  staleConnectionCheckEnabled: true
+curtain:
+  delay: 29000
