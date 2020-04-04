@@ -1,17 +1,14 @@
 package com.gowell.mes.mtr.service;
 
 import com.gowell.mes.mtr.Constants;
-import com.gowell.mes.mtr.Result;
 import com.gowell.mes.mtr.model.DeviceEntity;
 import com.gowell.mes.mtr.repository.DeviceJpaRepository;
 import com.gowell.mes.mtr.utils.StatusManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
