@@ -41,7 +41,7 @@ public class IntegrateService {
      * @return
      * @throws AWTException
      */
-    public Integer asynEffect(String effectId) throws AWTException {
+    public Integer asynEffectCurtain(String effectId) throws AWTException {
         List<DeviceEntity> devices = deviceRepository.findAllByCategory(Constants.DEVICE_CURTAIN);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;//设备未找到
@@ -55,7 +55,7 @@ public class IntegrateService {
         if (device.getOnoff() == Integer.valueOf(effectId)) {
             return -3;//设备已为该状态
         }
-        operation(effectId, device);
+        operationCurtain(effectId, device);
         return 0;//操作成功！
     }
 
@@ -66,7 +66,7 @@ public class IntegrateService {
      * @param device   幕布设备
      * @throws AWTException
      */
-    public synchronized void operation(String effectId, DeviceEntity device) throws AWTException {
+    public synchronized void operationCurtain(String effectId, DeviceEntity device) throws AWTException {
         Timer timer = new Timer();
         flag = false;
         device.setProperty8("" + System.currentTimeMillis());
@@ -89,7 +89,7 @@ public class IntegrateService {
      * @param lampId 灯光ID
      * @return
      */
-    public Integer asynPowerOn(String lampId) {
+    public Integer asynPowerOnLamp(String lampId) {
         List<DeviceEntity> devices = deviceRepository.findAllByNameAndCategory(lampId, Constants.DEVICE_LAMP);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -108,7 +108,7 @@ public class IntegrateService {
      * @param lampId 灯光ID
      * @return
      */
-    public Integer asynPowerOff(String lampId) {
+    public Integer asynPowerOffLamp(String lampId) {
         List<DeviceEntity> devices = deviceRepository.findAllByNameAndCategory(lampId, Constants.DEVICE_LAMP);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -127,7 +127,7 @@ public class IntegrateService {
      * @param groupId 灯组ID
      * @return
      */
-    public Integer asynGroupOn(String groupId) {
+    public Integer asynGroupOnLamp(String groupId) {
         List<DeviceEntity> devices = deviceRepository.findAllByCategoryOrderByIdAsc(Constants.DEVICE_LAMP);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -155,7 +155,7 @@ public class IntegrateService {
      * @param groupId 灯组ID
      * @return
      */
-    public Integer asynGroupOnOff(@RequestParam(required = true) String groupId) {
+    public Integer asynGroupOnOffLamp(@RequestParam(required = true) String groupId) {
         List<DeviceEntity> devices = deviceRepository.findAllByCategoryOrderByIdAsc(Constants.DEVICE_LAMP);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -247,7 +247,7 @@ public class IntegrateService {
      *
      * @return
      */
-    public Integer asynEffectOff() {
+    public Integer asynEffectOffGlass() {
         DeviceEntity device = null;
         List<DeviceEntity> devices = deviceRepository.findAllByNameAndCategory(Constants.DEVICE_GLASS_SPECIAL,
                 Constants.DEVICE_GLASS);
@@ -268,7 +268,7 @@ public class IntegrateService {
      * @param effectId 玻璃ID
      * @return
      */
-    public Integer asynEffectOn(String effectId) {
+    public Integer asynEffectOnGlass(String effectId) {
         List<DeviceEntity> devices = deviceRepository.findAllByNameAndCategory(Constants.DEVICE_GLASS_SPECIAL,
                 Constants.DEVICE_GLASS);
         if (CollectionUtils.isEmpty(devices)) {
@@ -366,7 +366,7 @@ public class IntegrateService {
      *
      * @return
      */
-    public Integer asynPowerOnProjector() {
+    public Integer asynPowerOnMonitor() {
         List<DeviceEntity> devices = deviceRepository.findAllByCategory(Constants.DEVICE_MONITOR);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -389,7 +389,7 @@ public class IntegrateService {
      *
      * @return
      */
-    public Integer asynPowerOff() {
+    public Integer asynPowerOffMonitor() {
         List<DeviceEntity> devices = deviceRepository.findAllByCategory(Constants.DEVICE_MONITOR);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -413,7 +413,7 @@ public class IntegrateService {
      *
      * @return
      */
-    public Integer asynPowerOn() {
+    public Integer asynPowerOnProjector() {
         List<DeviceEntity> devices = deviceRepository.findAllByCategory(Constants.DEVICE_PROJECTOR);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -509,7 +509,7 @@ public class IntegrateService {
      *
      * @return
      */
-    public Integer asynMuteOn() {
+    public Integer asynMuteOnProjector() {
         List<DeviceEntity> devices = deviceRepository.findAllByCategory(Constants.DEVICE_PROJECTOR);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -533,7 +533,7 @@ public class IntegrateService {
      *
      * @return
      */
-    public Integer asynMuteOff() {
+    public Integer asynMuteOffProjector() {
         List<DeviceEntity> devices = deviceRepository.findAllByCategory(Constants.DEVICE_PROJECTOR);
         if (CollectionUtils.isEmpty(devices)) {
             return -1;
@@ -557,7 +557,7 @@ public class IntegrateService {
      *
      * @return
      */
-    public Map<String, Object> asynStatus() {
+    public Map<String, Object> asynStatusProjector() {
         Map<String, Object> map = new HashMap<String, Object>();
         List<DeviceEntity> devices = deviceRepository.findAllByCategory(Constants.DEVICE_PROJECTOR);
         if (CollectionUtils.isEmpty(devices)) {
@@ -577,4 +577,184 @@ public class IntegrateService {
         return map;
     }
 
+    /**
+     * 一键总开关
+     *
+     * @param power 0：关；1：开
+     * @return
+     * @throws AWTException
+     */
+    public String masterSwitch(Integer power) throws AWTException {
+        StringBuffer sbf = new StringBuffer();
+        List<DeviceEntity> devices = deviceRepository.findAll();
+        String curtain = "2";
+        if (power == 0) {
+            curtain = "1";
+        }
+        if (CollectionUtils.isEmpty(devices)) {
+            sbf.append("设备未找到");
+        }
+        for (DeviceEntity device : devices) {
+            switch (device.getName()) {
+                case "":
+                    break;
+                default:
+                    //大屏S1、投影仪P1、玻璃（大）G1、（小）G6、灯光L1、L2、L3、L4
+                    if ((device.getName().contains("S1") || device.getName().contains("P1") || device.getName().contains("G")) && !StringUtils.isEmpty(device.getCmdstring())) {
+                        if (device.getName().contains("G") && (device.getOnoff() == power && !StringUtils.isEmpty(device.getProperty1()) && !"0".equals(device.getProperty1()))) {
+                            sbf.append("玻璃：");
+                            sbf.append(device.getName());
+                            sbf.append("--工作状态异常");
+                            break;
+                        }
+                        sbf.append("设备：");
+                        sbf.append(device.getName());
+                        sbf.append("--指令异常.");
+                        break;
+                    }
+                    device.setStatus(Constants.COMMAND_SETUP);
+                    device.setCmdstring(power.toString());
+                    device.setTries(3);
+                    break;
+            }
+            //幕布C1
+            while (device.getName().contains("C1")) {
+                if (!flag) {
+                    sbf.append("幕布：C1--设备正在运作，请稍后再试");
+                }
+                if (device.getOnoff() == Integer.valueOf(curtain)) {
+                    sbf.append("幕布：C1--设备已为该状态");
+                    break;
+                }
+                operationCurtain(curtain, device);
+                break;
+            }
+
+        }
+        deviceRepository.saveAll(devices);
+        return sbf.toString();
+    }
+
+
+    /**
+     * 灯光总开关
+     *
+     * @param lampSwitch 0：关；1：开
+     * @param lampNames  灯名称：L1...
+     * @return
+     */
+    public String mainLampSwitch(Integer lampSwitch, String lampNames) {
+        StringBuffer sbf = new StringBuffer();
+        List<DeviceEntity> devices = deviceRepository.findAll();
+        if (CollectionUtils.isEmpty(devices)) {
+            sbf.append("设备未找到");
+        }
+        String[] lampArray = lampNames.split(",");
+        for (DeviceEntity device : devices) {
+            if (lampArray.length == 0) {
+                while (device.getName().contains("L")) {
+                    device.setStatus(Constants.COMMAND_SETUP);
+                    device.setCmdstring(lampSwitch.toString());
+                    device.setTries(3);
+                    break;
+                }
+            } else {
+                for (String lamp : lampArray) {
+                    if (device.getName().contains(lamp)) {
+                        device.setStatus(Constants.COMMAND_SETUP);
+                        device.setCmdstring(lampSwitch.toString());
+                        device.setTries(3);
+                        break;
+                    }
+                }
+
+            }
+        }
+        deviceRepository.saveAll(devices);
+        return sbf.toString();
+    }
+
+    /**
+     * 大会议室总开关
+     *
+     * @param largeMeetPower 0：关；1：开
+     * @return
+     */
+    public String largeMeetSwitch(Integer largeMeetPower) {
+        StringBuffer sbf = new StringBuffer();
+        List<DeviceEntity> devices = deviceRepository.findAll();
+        String[] largeMeets = Constants.MEETING_LARGE.split(",");
+        if (CollectionUtils.isEmpty(devices)) {
+            sbf.append("设备未找到");
+        }
+        for (DeviceEntity device : devices) {
+            for (String _largeMeet : largeMeets) {
+                if (device.getName().equals(_largeMeet)) {
+                    device.setStatus(Constants.COMMAND_SETUP);
+                    device.setCmdstring(largeMeetPower.toString());
+                    device.setTries(3);
+                    break;
+                }
+            }
+        }
+        deviceRepository.saveAll(devices);
+        return null;
+    }
+
+    /**
+     * 小会议室总开关
+     *
+     * @param smallMeetPower 0：关；1：开
+     * @return
+     */
+    public String smallMeetSwitch(Integer smallMeetPower) throws AWTException {
+        StringBuffer sbf = new StringBuffer();
+        List<DeviceEntity> devices = deviceRepository.findAll();
+        String curtain = "2";
+        if (smallMeetPower == 0) {
+            curtain = "1";
+        }
+        String[] largeMeets = Constants.MEETING_SMALL.split(",");
+        if (CollectionUtils.isEmpty(devices)) {
+            sbf.append("设备未找到");
+        }
+        for (DeviceEntity device : devices) {
+            for (String _smallMeet : largeMeets) {
+                if (device.getName().equals(_smallMeet)) {
+                    if (device.getName().equals("C1")) {
+                        if (!flag) {
+                            sbf.append("幕布：C1--设备正在运作");
+                            break;
+                        }
+                        if (device.getOnoff() == Integer.valueOf(curtain)) {
+                            sbf.append("幕布：C1--设备已为改状态");
+                            break;
+                        }
+                        operationCurtain(curtain, device);
+                        devices.remove(device);
+                        break;
+                    }
+                    device.setStatus(Constants.COMMAND_SETUP);
+                    device.setCmdstring(smallMeetPower.toString());
+                    device.setTries(3);
+                    break;
+                }
+            }
+        }
+        deviceRepository.saveAll(devices);
+        return null;
+    }
+
+    /**
+     * 测试main
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        String a = "1";
+        String[] as = a.split(",");
+        for (String _a : as)
+            System.out.println(_a.toString());
+    }
 }
+

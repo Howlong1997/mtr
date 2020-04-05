@@ -22,7 +22,7 @@ public class CurtainController {
     @RequestMapping("/aeffect")
     public Result asynEffect(@RequestParam(required = true) String effectId) throws AWTException {
         Result result = new Result();
-        Integer code = integrateService.asynEffect(effectId);
+        Integer code = integrateService.asynEffectCurtain(effectId);
         result.codeMatch(code);
         return result;
     }

@@ -37,7 +37,7 @@ public class GlassController {
     @RequestMapping("/aeffectoff")
     public Result asynEffectOff() {
         Result result = new Result();
-        Integer code = integrateService.asynEffectOff();
+        Integer code = integrateService.asynEffectOffGlass();
         result.codeMatch(code);
         return result;
     }
@@ -45,7 +45,7 @@ public class GlassController {
     @RequestMapping("/aeffecton")
     public Result asynEffectOn(@RequestParam(required = true) String effectId) {
         Result result = new Result();
-        Integer code = integrateService.asynEffectOn(effectId);
+        Integer code = integrateService.asynEffectOnGlass(effectId);
         result.codeMatch(code);
         return result;
     }

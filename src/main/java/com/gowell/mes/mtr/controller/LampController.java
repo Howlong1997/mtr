@@ -21,7 +21,7 @@ public class LampController {
     @RequestMapping("/apoweron")
     public Result asynPowerOn(@RequestParam(required = true) String lampId) {
         Result result = new Result();
-        Integer code = integrateService.asynPowerOn(lampId);
+        Integer code = integrateService.asynPowerOnLamp(lampId);
         result.codeMatch(code);
         return result;
     }
@@ -30,7 +30,7 @@ public class LampController {
     @RequestMapping("/apoweroff")
     public Result asynPowerOff(@RequestParam(required = true) String lampId) {
         Result result = new Result();
-        Integer code = integrateService.asynPowerOff(lampId);
+        Integer code = integrateService.asynPowerOffLamp(lampId);
         result.codeMatch(code);
         return result;
     }
@@ -39,7 +39,7 @@ public class LampController {
     @RequestMapping("/agroupon")
     public Result asynGroupOn(@RequestParam(required = true) String groupId) {
         Result result = new Result();
-        Integer code = integrateService.asynGroupOn(groupId);
+        Integer code = integrateService.asynGroupOnLamp(groupId);
         result.codeMatch(code);
         return result;
     }
@@ -48,7 +48,7 @@ public class LampController {
     @RequestMapping("/agroupoff")
     public Result asynGroupOnOff(@RequestParam(required = true) String groupId) {
         Result result = new Result();
-        Integer code = integrateService.asynGroupOnOff(groupId);
+        Integer code = integrateService.asynGroupOnOffLamp(groupId);
         result.codeMatch(code);
         return result;
     }

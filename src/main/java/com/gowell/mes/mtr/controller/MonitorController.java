@@ -18,7 +18,7 @@ public class MonitorController {
     @RequestMapping("/apoweron")
     public Result asynPowerOn() {
         Result result = new Result();
-        Integer code = integrateService.asynPowerOn();
+        Integer code = integrateService.asynPowerOnProjector();
         result.codeMatch(code);
         return result;
     }
@@ -27,7 +27,7 @@ public class MonitorController {
     @RequestMapping("/apoweroff")
     public Result asynPowerOff() {
         Result result = new Result();
-        Integer code = integrateService.asynPowerOff();
+        Integer code = integrateService.asynPowerOffMonitor();
         result.codeMatch(code);
         return result;
     }
