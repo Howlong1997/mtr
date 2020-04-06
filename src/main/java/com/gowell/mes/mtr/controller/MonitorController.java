@@ -14,11 +14,16 @@ public class MonitorController {
     @Autowired
     IntegrateService integrateService;
 
+    /**
+     * 大屏
+     * Bug：
+     * @return
+     */
     @Transactional
     @RequestMapping("/apoweron")
     public Result asynPowerOn() {
         Result result = new Result();
-        Integer code = integrateService.asynPowerOnProjector();
+        Integer code = integrateService.asynPowerOnMonitor();
         result.codeMatch(code);
         return result;
     }

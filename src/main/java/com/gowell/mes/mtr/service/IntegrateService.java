@@ -638,7 +638,7 @@ public class IntegrateService {
 
     /**
      * 灯光总开关
-     *
+     * Bug:
      * @param lampSwitch 0：关；1：开
      * @param lampNames  灯名称：L1...
      * @return
@@ -676,7 +676,7 @@ public class IntegrateService {
 
     /**
      * 大会议室总开关
-     *
+     * Bug:
      * @param largeMeetPower 0：关；1：开
      * @return
      */
@@ -703,7 +703,7 @@ public class IntegrateService {
 
     /**
      * 小会议室总开关
-     *
+     * Bug:smallMeetPower：1--第一次500；幕布无法开启
      * @param smallMeetPower 0：关；1：开
      * @return
      */
